@@ -2,6 +2,10 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const exphbs = require('express-handlebars');
+
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' })) //定義要使用的樣板引擎
+app.set('view engine', 'hbs')
 
 const mongoose = require('mongoose')   // 載入 mongoose
 mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true})  // 設定連線到 mongoDB
@@ -17,7 +21,7 @@ db.once('open', () => {       //連線成功只會發生一次，所以這裡使
 
 
 app.get('/', (req, res) => {
-  res.send("hello world")
+  res.render('index')
 })
 
 app.listen(port, () => {
