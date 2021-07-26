@@ -52,6 +52,28 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//當使用者觸發了上述 index 或 detail 頁面的 Edit 按鈕時
+app.get('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then((items) => res.render('edit', { todo: items }))
+    .catch(error => console.log(error))
+})
+
+//設定一條新的路由，來接住表單資料，並且把資料送往資料庫。
+app.post('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  return Todo.findById(id)      //查詢資料
+    .then(todo => {             //查詢成功，修改後重新儲存
+      todo.name = name
+      return todo.save()
+    })
+    .then(() => res.redirect(`/todos/${id}`))     //儲存成功，導回detail頁面
+    .catch(error => console.log(error))
+})
+
 app.listen(port, () => {
   console.log(`Express is running on http://localhost:${port}`)
 })

@@ -4,7 +4,8 @@
   {{#each todos}}
   <li>
     {{this.name}}
-    <a href="./todos/{{ this._id }}">detail</a>
+    <a href="./todos/{{ this._id }}">詳細資訊</a>
+    <a href="./todos/{{ this._id }}/edit">修改</a>
   </li>
   {{/each}}
 </ul>
